@@ -103,5 +103,43 @@ namespace IncidentAPI_Abdouli.Controllers
         {
             return _context.Incidents.Any(e => e.Id == id);
         }
+
+        [HttpGet("filterbystatus/{status}")]
+        public IActionResult FilterByStatus(string status)
+        {
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                return BadRequest("Le paramètre status est obligatoire.");
+            }
+
+            var list = from inc in _context.Incidents where inc.Status.Contains(status) select inc;
+
+            if (!list.Any())
+            {
+                return NotFound("Le statut spécifié n'existe pas ou aucun incident ne correspond à ce statut.");
+            }
+
+            return Ok(list);
+
+        }
+
+        [HttpGet("filterbyseverity/{severity}")]
+        public IActionResult FilterBySeverity(string severity)
+        {
+            if (string.IsNullOrWhiteSpace(severity))
+            {
+                return BadRequest("Le paramètre severity est obligatoire.");
+            }
+
+            var list = from inc in _context.Incidents where inc.Severity.Contains(severity) select inc;
+
+            if (!list.Any())
+            {
+                return NotFound("La gravité spécifiée n'existe pas ou aucun incident ne correspond à cette gravité.");
+            }
+
+            return Ok(list);
+
+        }
     }
 }
