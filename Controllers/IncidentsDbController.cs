@@ -146,5 +146,18 @@ namespace IncidentAPI_Abdouli.Controllers
             return Ok(list);
 
         }
+
+        // PATCH: api/Incidents/5/status
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> PatchIncidentStatus(int id, [FromBody] string status)
+        {
+            var incident = await _context.Incidents.FindAsync(id);
+            if (incident == null) return NotFound();
+
+            incident.Status = status;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
