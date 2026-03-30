@@ -13,6 +13,8 @@ namespace IncidentAPI_Abdouli.Controllers
     [ApiController]
     public class IncidentsDbController : ControllerBase
     {
+        private static readonly string[] AllowedSeverities = { "LOW", "MEDIUM", "HIGH", "CRITICAL" };
+        private static readonly string[] AllowedStatuses = { "OPEN", "IN_PROGRESS", "RESOLVED" };
         private readonly IncidentsDbContext _context;
 
         public IncidentsDbController(IncidentsDbContext context)
@@ -77,7 +79,9 @@ namespace IncidentAPI_Abdouli.Controllers
         [HttpPost]
         public async Task<ActionResult<Incident>> PostIncident(Incident incident)
         {
-            incident.Status = "IN_PROGRESS";
+            incident.Status = "OPEN";
+            incident.CreatedAt = DateTime.UtcNow;
+
             _context.Incidents.Add(incident);
             await _context.SaveChangesAsync();
 
