@@ -77,6 +77,7 @@ namespace IncidentAPI_Abdouli.Controllers
         [HttpPost]
         public async Task<ActionResult<Incident>> PostIncident(Incident incident)
         {
+            incident.Status = "IN_PROGRESS";
             _context.Incidents.Add(incident);
             await _context.SaveChangesAsync();
 
